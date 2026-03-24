@@ -35,8 +35,6 @@
     ["membership", "membership.html"],
     ["insights", "analytics.html"],
     ["analytics", "analytics.html"],
-    ["all screens", "showcase.html"],
-    ["showcase", "showcase.html"],
     ["academic precision", "concept-academic-precision.html"],
     ["anthemis pro", "concept-anthemis-pro.html"],
     ["scholar vibrant", "concept-scholar-vibrant.html"],
@@ -77,8 +75,7 @@
     { href: "dashboard.html", label: "Dashboard" },
     { href: "library.html", label: "Library" },
     { href: "research.html", label: "Research" },
-    { href: "analytics.html", label: "Analytics" },
-    { href: "showcase.html", label: "All Screens" }
+    { href: "analytics.html", label: "Analytics" }
   ];
 
   const sideLinks = [
@@ -90,8 +87,7 @@
     { href: "curriculum.html", label: "Curriculum", icon: "school" },
     { href: "schedule.html", label: "Planner", icon: "event_note" },
     { href: "achievements.html", label: "Achievements", icon: "military_tech" },
-    { href: "membership.html", label: "Membership", icon: "workspace_premium" },
-    { href: "showcase.html", label: "All Screens", icon: "splitscreen" }
+    { href: "membership.html", label: "Membership", icon: "workspace_premium" }
   ];
 
   const secondaryLinks = [
@@ -125,7 +121,6 @@
     "membership.html": { title: "Membership", kicker: "Plans and Access" },
     "schedule.html": { title: "Planner", kicker: "Study Scheduler" },
     "curriculum.html": { title: "Curriculum", kicker: "Program Flow" },
-    "showcase.html": { title: "All Screens", kicker: "Route Inventory" },
     "concept-academic-precision.html": { title: "Academic Precision", kicker: "Design Concept" },
     "concept-anthemis-pro.html": { title: "Anthemis Pro", kicker: "Design Concept" },
     "concept-scholar-vibrant.html": { title: "Scholar Vibrant", kicker: "Design Concept" }
@@ -144,6 +139,32 @@
     const link = document.createElement("link");
     link.rel = "stylesheet";
     link.href = "assets/site.css";
+    document.head.appendChild(link);
+  }
+
+  function ensureFonts() {
+    if (!document.querySelector('link[data-sc-fonts="preconnect-a"]')) {
+      const preconnectA = document.createElement("link");
+      preconnectA.rel = "preconnect";
+      preconnectA.href = "https://fonts.googleapis.com";
+      preconnectA.dataset.scFonts = "preconnect-a";
+      document.head.appendChild(preconnectA);
+    }
+
+    if (!document.querySelector('link[data-sc-fonts="preconnect-b"]')) {
+      const preconnectB = document.createElement("link");
+      preconnectB.rel = "preconnect";
+      preconnectB.href = "https://fonts.gstatic.com";
+      preconnectB.crossOrigin = "anonymous";
+      preconnectB.dataset.scFonts = "preconnect-b";
+      document.head.appendChild(preconnectB);
+    }
+
+    if (document.querySelector('link[data-sc-fonts="main"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;700&display=swap";
+    link.dataset.scFonts = "main";
     document.head.appendChild(link);
   }
 
@@ -170,7 +191,6 @@
     if (label.includes("research")) return "research.html";
     if (label.includes("archive")) return "archive.html";
     if (label.includes("analytics")) return "analytics.html";
-    if (label.includes("screen") || label.includes("showcase")) return "showcase.html";
     if (label.includes("profile")) return "profile.html";
     if (label.includes("settings")) return "settings.html";
     if (label.includes("membership") || label.includes("premium") || label.includes("checkout")) return "membership.html";
@@ -365,11 +385,12 @@
   function hideLegacyShell() {
     const legacy = new Set();
     document.querySelectorAll("body > header, body > nav, body > aside").forEach((node) => legacy.add(node));
+    document.querySelectorAll("body > footer").forEach((node) => legacy.add(node));
     document.querySelectorAll("body > div").forEach((node) => {
       const hasMainChild = Array.from(node.children).some((child) => child.tagName === "MAIN");
       if (!hasMainChild) return;
       Array.from(node.children).forEach((child) => {
-        if (["HEADER", "NAV", "ASIDE"].includes(child.tagName)) {
+        if (["HEADER", "NAV", "ASIDE", "FOOTER"].includes(child.tagName)) {
           legacy.add(child);
         }
       });
@@ -401,6 +422,40 @@
       <div class="sc-motion-orb sc-motion-orb-b"></div>
     `;
     document.body.prepend(layer);
+  }
+
+  function buildFooter() {
+    const footer = document.createElement("footer");
+    footer.className = "sc-site-footer";
+    footer.innerHTML = `
+      <div class="sc-site-footer-inner">
+        <div class="sc-site-footer-block">
+          <h2 class="sc-site-footer-heading">Soul Concept</h2>
+          <p class="sc-site-footer-copy">Defining the standard for digital study tools through curation and intentionality.</p>
+        </div>
+        <div class="sc-site-footer-block">
+          <h3 class="sc-site-footer-label">Resources</h3>
+          <a href="dashboard.html">Study Dashboard</a>
+          <a href="library.html">Subject Library</a>
+          <a href="grade-9-advanced.html">Flashcards</a>
+        </div>
+        <div class="sc-site-footer-block">
+          <h3 class="sc-site-footer-label">Legal</h3>
+          <a href="settings.html">Privacy Policy</a>
+          <a href="settings.html#support">Accessibility Statement</a>
+          <a href="membership.html">Cookie Policy</a>
+        </div>
+        <div class="sc-site-footer-block">
+          <h3 class="sc-site-footer-label">Contact</h3>
+          <a href="https://www.instagram.com/deanacious/" target="_blank" rel="noopener noreferrer">@deanacious on Instagram</a>
+          <a href="https://ca.linkedin.com/in/dean-concepcion-ba32983a9" target="_blank" rel="noopener noreferrer">Dean Concepcion on LinkedIn</a>
+          <p class="sc-site-footer-meta">© 2026 Soul Concept. All Rights Reserved.</p>
+          <a href="membership.html">Terms of Scholarship</a>
+          <a href="settings.html#support">Honor Code</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(footer);
   }
 
   function setupRevealAnimations() {
@@ -525,11 +580,13 @@
   }
 
   ensureStylesheet();
+  ensureFonts();
   wireRoutes();
   addMotionOrbs();
   buildShell();
   hideLegacyShell();
   cleanupLayout();
+  buildFooter();
   hydrateIcons();
   repairBrokenText();
   setupRevealAnimations();
