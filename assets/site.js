@@ -485,40 +485,6 @@
     document.body.prepend(layer);
   }
 
-  function buildFooter() {
-    const footer = document.createElement("footer");
-    footer.className = "sc-site-footer";
-    footer.innerHTML = `
-      <div class="sc-site-footer-inner">
-        <div class="sc-site-footer-block">
-          <h2 class="sc-site-footer-heading">Soul Concept</h2>
-          <p class="sc-site-footer-copy">Defining the standard for digital study tools through curation and intentionality.</p>
-        </div>
-        <div class="sc-site-footer-block">
-          <h3 class="sc-site-footer-label">Resources</h3>
-          <a href="dashboard.html">Study Dashboard</a>
-          <a href="library.html">Subject Library</a>
-          <a href="grade-9-advanced.html">Flashcards</a>
-        </div>
-        <div class="sc-site-footer-block">
-          <h3 class="sc-site-footer-label">Legal</h3>
-          <a href="settings.html">Privacy Policy</a>
-          <a href="settings.html#support">Accessibility Statement</a>
-          <a href="membership.html">Cookie Policy</a>
-        </div>
-        <div class="sc-site-footer-block">
-          <h3 class="sc-site-footer-label">Contact</h3>
-          <a href="https://www.instagram.com/deanacious/" target="_blank" rel="noopener noreferrer">@deanacious on Instagram</a>
-          <a href="https://ca.linkedin.com/in/dean-concepcion-ba32983a9" target="_blank" rel="noopener noreferrer">Dean Concepcion on LinkedIn</a>
-          <p class="sc-site-footer-meta">© 2026 Soul Concept. All Rights Reserved.</p>
-          <a href="membership.html">Terms of Scholarship</a>
-          <a href="settings.html#support">Honor Code</a>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(footer);
-  }
-
   function setupRevealAnimations() {
     const selectors = [
       "main > section",
@@ -1003,7 +969,6 @@
   buildShell();
   hideLegacyShell();
   cleanupLayout();
-  buildFooter();
   setupShellSearchTrigger();
   hydrateIcons();
   repairBrokenText();
