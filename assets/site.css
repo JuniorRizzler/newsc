@@ -491,6 +491,85 @@ body.sc-shell-open .sc-shell-scrim {
   color: #004435;
 }
 
+.sc-is-hidden {
+  display: none !important;
+}
+
+.sc-ui-active {
+  background: #004435 !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 24px rgba(0, 68, 53, 0.16);
+}
+
+.sc-search-anchor {
+  position: relative;
+}
+
+.sc-search-panel {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(191, 201, 195, 0.45);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 18px 40px rgba(29, 26, 34, 0.12);
+}
+
+.sc-search-item {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.8rem;
+  color: #1d1a22;
+  text-decoration: none;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.sc-search-item:hover,
+.sc-search-item:focus-visible {
+  background: #f3ebf7;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.sc-search-kicker {
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #707974;
+}
+
+.sc-search-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: #004435;
+}
+
+.sc-search-meta {
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  color: #404945;
+  line-height: 1.45;
+}
+
+.sc-search-empty {
+  padding: 0.8rem;
+  border-radius: 0.8rem;
+  background: #f9f1fd;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  color: #404945;
+}
+
 @media (min-width: 1024px) {
   .sc-shell-scrim {
     display: none;

@@ -126,6 +126,26 @@
     "concept-scholar-vibrant.html": { title: "Scholar Vibrant", kicker: "Design Concept" }
   };
 
+  const pageCatalog = [
+    { href: "index.html", title: "Home", kicker: "Soul Concept", summary: "Editorial landing page for discovery and navigation.", keywords: ["home", "discover", "landing", "knowledge"] },
+    { href: "discover.html", title: "Discover", kicker: "Editorial Home", summary: "Browse featured knowledge paths and study tools.", keywords: ["discover", "featured", "manifesto"] },
+    { href: "dashboard.html", title: "Dashboard", kicker: "Scholar Workspace", summary: "Track tasks, progress, and learning insights.", keywords: ["dashboard", "overview", "tasks", "flow"] },
+    { href: "library.html", title: "Library", kicker: "Subject Collections", summary: "Search disciplines, modules, and subject collections.", keywords: ["library", "subjects", "disciplines", "modules"] },
+    { href: "research.html", title: "Research", kicker: "Repository", summary: "Search papers, authors, keywords, and DOI references.", keywords: ["research", "papers", "authors", "doi"] },
+    { href: "analytics.html", title: "Analytics", kicker: "Scholar Metrics", summary: "Review growth, impact, mastery, and knowledge stream metrics.", keywords: ["analytics", "metrics", "impact", "growth"] },
+    { href: "analytics-overview.html", title: "Analytics Deep Dive", kicker: "Performance Review", summary: "Expanded analytics with deeper performance context.", keywords: ["analytics", "deep dive", "performance"] },
+    { href: "curation.html", title: "Curation", kicker: "Editorial Console", summary: "Manage saved artifacts and curated materials.", keywords: ["curation", "artifacts", "saved"] },
+    { href: "archive.html", title: "Archive", kicker: "Manuscripts", summary: "Search archived material and references.", keywords: ["archive", "manuscripts", "history"] },
+    { href: "membership.html", title: "Membership", kicker: "Plans and Access", summary: "Review access plans and institutional membership.", keywords: ["membership", "plans", "premium"] },
+    { href: "settings.html", title: "Settings", kicker: "Account Controls", summary: "Update privacy, support, and notification controls.", keywords: ["settings", "privacy", "support"] },
+    { href: "profile.html", title: "Profile", kicker: "Academic Identity", summary: "Manage profile and scholar identity details.", keywords: ["profile", "account", "identity"] },
+    { href: "schedule.html", title: "Planner", kicker: "Study Scheduler", summary: "Plan tasks, curriculum, and focus sessions.", keywords: ["planner", "schedule", "calendar"] },
+    { href: "grade-9.html", title: "Grade 9", kicker: "Core Modules", summary: "Curated Grade 9 subject pathways.", keywords: ["grade 9", "science", "subjects"] },
+    { href: "grade-10.html", title: "Grade 10", kicker: "Expanded Curriculum", summary: "Grade 10 archives and curriculum.", keywords: ["grade 10", "math", "archives"] },
+    { href: "grade-9-advanced.html", title: "Advanced Library", kicker: "Flashcards", summary: "Flashcards and advanced revision tools.", keywords: ["flashcards", "advanced", "revision"] },
+    { href: "achievements.html", title: "Achievements", kicker: "Scholar Profile", summary: "Review milestones and achievement metrics.", keywords: ["achievements", "milestones", "impact"] }
+  ];
+
   function normalize(text) {
     return (text || "")
       .replace(/\s+/g, " ")
@@ -266,6 +286,40 @@
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;");
+  }
+
+  function pageCardData(node, fallbackIndex = 0) {
+    const title = (node.querySelector("h3, h4, h5, h6")?.textContent || `Item ${fallbackIndex + 1}`).trim();
+    const kicker = (node.querySelector("span")?.textContent || "").trim();
+    const description = (node.querySelector("p")?.textContent || "").trim();
+    return {
+      title,
+      kicker,
+      description,
+      text: normalize([title, kicker, description].join(" "))
+    };
+  }
+
+  function searchCatalog(query) {
+    const normalized = normalize(query);
+    if (!normalized) return [];
+    return pageCatalog
+      .map((page) => {
+        const haystack = normalize([page.title, page.kicker, page.summary, ...(page.keywords || [])].join(" "));
+        const exactScore = haystack.includes(normalized) ? 3 : 0;
+        const tokenScore = normalized.split(" ").reduce((score, token) => score + (haystack.includes(token) ? 1 : 0), 0);
+        return { ...page, score: exactScore + tokenScore };
+      })
+      .filter((page) => page.score > 0)
+      .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+      .slice(0, 6);
+  }
+
+  function buildSearchPanel() {
+    const panel = document.createElement("div");
+    panel.className = "sc-search-panel sc-is-hidden";
+    panel.setAttribute("role", "listbox");
+    return panel;
   }
 
   function activeMatch(href, pathname) {
@@ -561,6 +615,327 @@
     });
   }
 
+  function setupGlobalSearch() {
+    const inputs = Array.from(document.querySelectorAll('input[type="text"]'))
+      .filter((input) => /search|keywords|authors|doi/i.test(input.placeholder || ""));
+
+    inputs.forEach((input) => {
+      const wrapper = input.parentElement;
+      if (!wrapper) return;
+      wrapper.classList.add("sc-search-anchor");
+      const panel = buildSearchPanel();
+      wrapper.appendChild(panel);
+
+      const renderPanel = (query) => {
+        const trimmed = query.trim();
+        if (!trimmed) {
+          panel.innerHTML = "";
+          panel.classList.add("sc-is-hidden");
+          return;
+        }
+
+        const results = searchCatalog(trimmed);
+        if (!results.length) {
+          panel.innerHTML = `<div class="sc-search-empty">No direct page match found. Keep typing to filter this page.</div>`;
+          panel.classList.remove("sc-is-hidden");
+          return;
+        }
+
+        panel.innerHTML = results.map((result) => `
+          <a class="sc-search-item" href="${result.href}" role="option">
+            <span class="sc-search-kicker">${escapeHtml(result.kicker)}</span>
+            <span class="sc-search-title">${escapeHtml(result.title)}</span>
+            <span class="sc-search-meta">${escapeHtml(result.summary)}</span>
+          </a>
+        `).join("");
+        panel.classList.remove("sc-is-hidden");
+      };
+
+      input.addEventListener("input", () => renderPanel(input.value));
+      input.addEventListener("focus", () => renderPanel(input.value));
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          panel.classList.add("sc-is-hidden");
+          return;
+        }
+        if (event.key === "Enter") {
+          const first = panel.querySelector("a");
+          if (first) {
+            event.preventDefault();
+            window.location.href = first.getAttribute("href");
+          }
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!wrapper.contains(event.target)) {
+          panel.classList.add("sc-is-hidden");
+        }
+      });
+    });
+  }
+
+  function setupLibraryInteractions() {
+    if (currentPath() !== "library.html") return;
+    const searchInput = document.querySelector('input[placeholder*="disciplines"], input[placeholder*="modules"]');
+    const filterButton = Array.from(document.querySelectorAll("button")).find((button) => button.textContent.includes("filter_list"));
+    const sortButton = Array.from(document.querySelectorAll("button")).find((button) => button.textContent.includes("sort_by_alpha"));
+    const grid = Array.from(document.querySelectorAll("main .grid")).find((node) => node.querySelector("h3"));
+    if (!searchInput || !grid) return;
+
+    const cards = Array.from(grid.children).filter((node) => node.querySelector("h3"));
+    const featuredTitles = new Set(["Sciences", "Mathematics", "Humanities"]);
+    const state = { query: "", filter: "all", sort: "default" };
+
+    cards.forEach((card, index) => {
+      const data = pageCardData(card, index);
+      card.dataset.scIndex = String(index);
+      card.dataset.scTitle = data.title;
+      card.dataset.scText = data.text;
+      if (featuredTitles.has(data.title)) card.dataset.scFeatured = "true";
+    });
+
+    const render = () => {
+      const ordered = [...cards].sort((a, b) => {
+        if (state.sort === "alpha") {
+          return (a.dataset.scTitle || "").localeCompare(b.dataset.scTitle || "");
+        }
+        return Number(a.dataset.scIndex) - Number(b.dataset.scIndex);
+      });
+
+      ordered.forEach((card) => grid.appendChild(card));
+
+      cards.forEach((card) => {
+        const matchesQuery = !state.query || (card.dataset.scText || "").includes(state.query);
+        const matchesFilter = state.filter === "all" || card.dataset.scFeatured === "true";
+        card.classList.toggle("sc-is-hidden", !(matchesQuery && matchesFilter));
+      });
+
+      if (filterButton) {
+        filterButton.classList.toggle("sc-ui-active", state.filter === "featured");
+        filterButton.title = state.filter === "featured" ? "Showing featured disciplines" : "Showing all disciplines";
+      }
+
+      if (sortButton) {
+        sortButton.classList.toggle("sc-ui-active", state.sort === "alpha");
+        sortButton.title = state.sort === "alpha" ? "Sorted alphabetically" : "Sorted by curation order";
+      }
+    };
+
+    searchInput.addEventListener("input", () => {
+      state.query = normalize(searchInput.value);
+      render();
+    });
+
+    if (filterButton) {
+      filterButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        state.filter = state.filter === "all" ? "featured" : "all";
+        render();
+      });
+    }
+
+    if (sortButton) {
+      sortButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        state.sort = state.sort === "default" ? "alpha" : "default";
+        render();
+      });
+    }
+
+    render();
+  }
+
+  function setupDashboardInteractions() {
+    if (currentPath() !== "dashboard.html") return;
+    const storageKey = "sc-dashboard-flow-state";
+    const state = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    const flowHeading = Array.from(document.querySelectorAll("h3")).find((node) => /today's flow/i.test(node.textContent || ""));
+    const flowSection = flowHeading?.closest("div, section");
+    const taskNodes = flowSection ? Array.from(flowSection.querySelectorAll(".space-y-4 > div")) : [];
+    const clearButton = Array.from(document.querySelectorAll("button")).find((button) => /clear completed/i.test(button.textContent || ""));
+    const searchInput = document.querySelector('input[placeholder*="Search archive"]');
+    const persist = () => localStorage.setItem(storageKey, JSON.stringify(state));
+
+    taskNodes.forEach((task) => {
+      const titleNode = task.querySelector("p");
+      const checkbox = task.querySelector(".w-6.h-6");
+      const key = normalize(titleNode?.textContent || "");
+      if (!checkbox || !key) return;
+      task.dataset.scTask = key;
+
+      const applyTaskState = () => {
+        const taskState = state[key] || {};
+        const complete = Boolean(taskState.complete);
+        const archived = Boolean(taskState.archived);
+        task.classList.toggle("sc-is-hidden", archived);
+        task.classList.toggle("opacity-60", complete);
+        const icon = checkbox.querySelector(".material-symbols-outlined");
+        checkbox.classList.toggle("bg-primary", complete);
+        checkbox.classList.toggle("border-primary/20", !complete);
+        if (icon) {
+          icon.style.opacity = complete ? "1" : "0";
+          icon.style.color = complete ? "#ffffff" : "";
+          icon.style.fontVariationSettings = complete ? "'FILL' 1" : "";
+        }
+      };
+
+      checkbox.style.cursor = "pointer";
+      checkbox.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        state[key] = { ...(state[key] || {}), complete: !state[key]?.complete, archived: false };
+        persist();
+        applyTaskState();
+      });
+
+      applyTaskState();
+    });
+
+    if (clearButton) {
+      clearButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        taskNodes.forEach((task) => {
+          const key = task.dataset.scTask;
+          if (key && state[key]?.complete) state[key].archived = true;
+        });
+        persist();
+        taskNodes.forEach((task) => {
+          task.classList.toggle("sc-is-hidden", Boolean(state[task.dataset.scTask]?.archived));
+        });
+      });
+    }
+
+    if (searchInput) {
+      const panels = [...new Set(Array.from(document.querySelectorAll("main h3, main h4"))
+        .map((node) => node.closest("div, article, section"))
+        .filter(Boolean))];
+      searchInput.addEventListener("input", () => {
+        const query = normalize(searchInput.value);
+        panels.forEach((panel) => {
+          const match = !query || normalize(panel.textContent || "").includes(query);
+          panel.classList.toggle("ring-2", Boolean(query) && match);
+          panel.classList.toggle("ring-primary/30", Boolean(query) && match);
+        });
+      });
+    }
+  }
+
+  function downloadTextFile(filename, content) {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function setupAnalyticsInteractions() {
+    const pathname = currentPath();
+    if (!["analytics.html", "analytics-overview.html"].includes(pathname)) return;
+
+    const periods = [
+      { label: "Real-time", path: "M0,250 Q100,240 200,180 T400,140 T600,60 T800,20", peak: "98.4 IQV", depth: "1,240h", retention: "92%", phase: "Advanced Synthesis", citation: "4.8k", delta: "+12.4%", impact: "89", grade: "A+" },
+      { label: "Monthly", path: "M0,260 Q100,220 200,210 T400,130 T600,95 T800,58", peak: "91.2 IQV", depth: "982h", retention: "88%", phase: "Pattern Consolidation", citation: "3.9k", delta: "+8.7%", impact: "84", grade: "A" },
+      { label: "Quarterly", path: "M0,270 Q100,245 200,200 T400,165 T600,120 T800,92", peak: "86.7 IQV", depth: "2,860h", retention: "94%", phase: "Long-Range Integration", citation: "9.6k", delta: "+22.1%", impact: "93", grade: "A+" }
+    ];
+
+    let periodIndex = 0;
+    const badge = Array.from(document.querySelectorAll("span")).find((node) => (node.textContent || "").trim() === "Real-time");
+    const exportButton = Array.from(document.querySelectorAll("button")).find((node) => /export report/i.test(node.textContent || ""));
+    const deepDiveButton = Array.from(document.querySelectorAll("button")).find((node) => /deep dive/i.test(node.textContent || ""));
+    const searchInput = document.querySelector('input[placeholder*="Search knowledge"]');
+    const chartPath = document.querySelector('svg path[stroke="#004435"]');
+    const chartArea = document.querySelector('svg path[fill="url(#line-gradient)"]');
+    const peakValue = Array.from(document.querySelectorAll("p")).find((node) => /IQV/.test(node.textContent || ""));
+    const totals = Array.from(document.querySelectorAll("p.text-lg.font-headline.font-bold"));
+    const citationCard = Array.from(document.querySelectorAll("h4")).find((node) => /citation velocity/i.test(node.textContent || ""))?.closest("div.rounded-3xl");
+    const citationValue = citationCard?.querySelector(".text-4xl");
+    const citationDelta = citationCard?.querySelector("span");
+    const impactCard = Array.from(document.querySelectorAll("h4")).find((node) => /research impact/i.test(node.textContent || ""))?.closest("div.rounded-3xl");
+    const impactValue = impactCard?.querySelector(".text-5xl");
+    const gradeNode = Array.from(document.querySelectorAll("span")).find((node) => /^[A-F][+]?$/.test((node.textContent || "").trim()));
+    const tableRows = Array.from(document.querySelectorAll("tbody tr"));
+
+    const applyPeriod = () => {
+      const config = periods[periodIndex];
+      if (badge) badge.textContent = config.label;
+      if (chartPath) chartPath.setAttribute("d", config.path);
+      if (chartArea) chartArea.setAttribute("d", `${config.path} L800,300 L0,300 Z`);
+      if (peakValue) peakValue.textContent = config.peak;
+      if (totals[0]) totals[0].textContent = config.depth;
+      if (totals[1]) totals[1].textContent = config.retention;
+      if (totals[2]) totals[2].textContent = config.phase;
+      if (citationValue) citationValue.textContent = config.citation;
+      if (citationDelta) citationDelta.textContent = config.delta;
+      if (impactValue) impactValue.innerHTML = `${config.impact}<span class="text-xl text-primary-fixed">/100</span>`;
+      if (gradeNode) gradeNode.textContent = config.grade;
+    };
+
+    if (badge) {
+      badge.style.cursor = "pointer";
+      badge.addEventListener("click", () => {
+        periodIndex = (periodIndex + 1) % periods.length;
+        applyPeriod();
+      });
+    }
+
+    if (citationCard) {
+      citationCard.addEventListener("click", () => {
+        periodIndex = (periodIndex + 1) % periods.length;
+        applyPeriod();
+      });
+    }
+
+    if (impactCard) {
+      impactCard.addEventListener("click", () => {
+        periodIndex = (periodIndex + 1) % periods.length;
+        applyPeriod();
+      });
+    }
+
+    if (exportButton) {
+      exportButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        const config = periods[periodIndex];
+        downloadTextFile(
+          `soul-concept-analytics-${config.label.toLowerCase()}.json`,
+          JSON.stringify({
+            generatedAt: new Date().toISOString(),
+            period: config.label,
+            peakMomentum: config.peak,
+            totalDepth: config.depth,
+            retention: config.retention,
+            currentPhase: config.phase,
+            citationVelocity: config.citation,
+            researchImpact: `${config.impact}/100`,
+            subjectMastery: config.grade
+          }, null, 2)
+        );
+      });
+    }
+
+    if (deepDiveButton && pathname === "analytics-overview.html") {
+      deepDiveButton.addEventListener("click", () => {
+        window.location.href = "research.html";
+      });
+    }
+
+    if (searchInput && tableRows.length) {
+      searchInput.addEventListener("input", () => {
+        const query = normalize(searchInput.value);
+        tableRows.forEach((row) => {
+          row.classList.toggle("sc-is-hidden", Boolean(query) && !normalize(row.textContent || "").includes(query));
+        });
+      });
+    }
+
+    applyPeriod();
+  }
+
   function repairBrokenText() {
     document.querySelectorAll("*").forEach((node) => {
       if (node.children.length) return;
@@ -589,6 +964,10 @@
   buildFooter();
   hydrateIcons();
   repairBrokenText();
+  setupGlobalSearch();
+  setupLibraryInteractions();
+  setupDashboardInteractions();
+  setupAnalyticsInteractions();
   setupRevealAnimations();
   setupTiltCards();
   setupProgressAnimations();
