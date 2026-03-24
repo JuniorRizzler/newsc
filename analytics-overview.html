@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Soul Concept | Academic Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline": "#707974",
+              "on-tertiary-fixed": "#1b1b1f",
+              "on-tertiary-fixed-variant": "#47464b",
+              "on-surface": "#1d1a22",
+              "surface-container-low": "#f9f1fd",
+              "surface-tint": "#2f6857",
+              "secondary-fixed-dim": "#ffb59e",
+              "background": "#fef7ff",
+              "inverse-primary": "#98d3bd",
+              "on-primary-fixed": "#002118",
+              "tertiary": "#3b3b3f",
+              "on-tertiary-container": "#c8c5ca",
+              "tertiary-fixed": "#e4e1e7",
+              "outline-variant": "#bfc9c3",
+              "on-secondary-fixed": "#3a0a00",
+              "on-tertiary": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "inverse-on-surface": "#f6eefa",
+              "on-secondary": "#ffffff",
+              "tertiary-container": "#535256",
+              "surface-container": "#f3ebf7",
+              "on-secondary-container": "#5b1600",
+              "surface-bright": "#fef7ff",
+              "secondary-container": "#fe6432",
+              "on-background": "#1d1a22",
+              "error": "#ba1a1a",
+              "primary-container": "#215c4b",
+              "secondary-fixed": "#ffdbd0",
+              "secondary": "#ae3200",
+              "surface": "#fef7ff",
+              "tertiary-fixed-dim": "#c8c5cb",
+              "surface-variant": "#e7e0eb",
+              "primary-fixed-dim": "#98d3bd",
+              "on-primary-fixed-variant": "#125040",
+              "on-primary-container": "#97d2bc",
+              "primary-fixed": "#b3efd8",
+              "surface-container-high": "#ede6f1",
+              "on-surface-variant": "#404945",
+              "on-secondary-fixed-variant": "#852400",
+              "surface-container-lowest": "#ffffff",
+              "on-error-container": "#93000a",
+              "surface-dim": "#dfd7e3",
+              "inverse-surface": "#322f37",
+              "primary": "#004435",
+              "surface-container-highest": "#e7e0eb"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Inter"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient-emerald {
+            background: linear-gradient(135deg, #004435 0%, #215c4b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .rotate-y-12 {
+            transform: rotateY(-12deg) rotateX(5deg);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(29,26,34,0.06)]">
+<div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-xl font-extrabold text-emerald-900 dark:text-emerald-50 tracking-tighter font-headline">Soul Concept</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-slate-500 font-label text-xs uppercase tracking-widest hover:bg-emerald-50/50 transition-all duration-200 px-3 py-1 rounded-lg" href="#">Library</a>
+<a class="text-slate-500 font-label text-xs uppercase tracking-widest hover:bg-emerald-50/50 transition-all duration-200 px-3 py-1 rounded-lg" href="#">Research</a>
+<a class="text-slate-500 font-label text-xs uppercase tracking-widest hover:bg-emerald-50/50 transition-all duration-200 px-3 py-1 rounded-lg" href="#">Achievements</a>
+<a class="text-emerald-800 dark:text-emerald-200 border-b-2 border-emerald-800 font-label text-xs uppercase tracking-widest px-3 py-1" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-lowest border-none rounded-full text-sm focus:ring-2 focus:ring-primary/20 w-64 transition-all" placeholder="Search knowledge..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-emerald-900 hover:bg-emerald-50/50 p-2 rounded-full transition-all">account_circle</button>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Section / Header -->
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<span class="font-label text-secondary font-bold uppercase tracking-[0.2em] text-[10px] mb-3 block">Scholar Insight v4.2</span>
+<h1 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight text-primary leading-tight">
+                    Academic <span class="text-gradient-emerald">Analytics</span>
+</h1>
+<p class="mt-4 text-on-surface-variant font-body text-lg max-w-xl">
+                    Mapping the topography of your intellectual journey. Your research impact has grown by <span class="font-bold text-primary">24.8%</span> this semester.
+                </p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-3 bg-surface-container-highest text-on-surface rounded-xl font-body font-semibold text-sm hover:bg-surface-variant transition-all">Export Report</button>
+<button class="px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-xl font-body font-semibold text-sm shadow-lg hover:opacity-90 transition-all">Deep Dive</button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Knowledge Growth Line Chart (Main Bento Item) -->
+<section class="md:col-span-8 bg-surface-container-low p-8 rounded-[2rem] shadow-sm relative overflow-hidden group">
+<div class="flex justify-between items-start mb-12">
+<div>
+<h3 class="font-headline text-2xl font-bold text-primary">Knowledge Growth</h3>
+<p class="font-label text-xs text-outline-variant tracking-wider uppercase mt-1">Acquisition Velocity ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ 2024</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold rounded-full uppercase tracking-tighter">Real-time</span>
+</div>
+</div>
+<!-- Placeholder for high-fidelity chart -->
+<div class="h-80 w-full relative flex items-end justify-between px-4">
+<div class="absolute inset-0 flex items-center justify-center opacity-10">
+<span class="material-symbols-outlined text-[12rem]">trending_up</span>
+</div>
+<!-- Custom SVG Line Chart -->
+<svg class="absolute bottom-0 left-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 800 300">
+<defs>
+<lineargradient id="line-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#004435" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#004435" stop-opacity="0"></stop>
+</lineargradient>
+<filter id="glow">
+<fegaussianblur result="blur" stddeviation="4"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<path d="M0,250 Q100,240 200,180 T400,140 T600,60 T800,20 L800,300 L0,300 Z" fill="url(#line-gradient)"></path>
+<path d="M0,250 Q100,240 200,180 T400,140 T600,60 T800,20" fill="none" filter="url(#glow)" stroke="#004435" stroke-linecap="round" stroke-width="4"></path>
+</svg>
+<!-- Floating Data Tooltip -->
+<div class="absolute top-10 right-20 glass-card p-4 rounded-2xl border border-white/20 shadow-xl z-10 group-hover:-translate-y-2 transition-transform duration-500">
+<p class="font-label text-[10px] text-slate-500 uppercase font-bold mb-1">Peak Momentum</p>
+<p class="font-headline text-xl font-extrabold text-primary">98.4 IQV</p>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/20 flex justify-between">
+<div class="flex gap-8">
+<div>
+<p class="text-[10px] font-label text-outline uppercase font-bold">Total Depth</p>
+<p class="text-lg font-headline font-bold text-primary">1,240h</p>
+</div>
+<div>
+<p class="text-[10px] font-label text-outline uppercase font-bold">Retention</p>
+<p class="text-lg font-headline font-bold text-primary">92%</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-label text-outline uppercase font-bold">Current Phase</p>
+<p class="text-lg font-headline font-bold text-secondary">Advanced Synthesis</p>
+</div>
+</div>
+</section>
+<!-- Floating Metrics (Asymmetric Column) -->
+<div class="md:col-span-4 flex flex-col gap-6 perspective-1000">
+<!-- Citation Velocity -->
+<div class="bg-surface-container-lowest p-6 rounded-3xl shadow-[0_20px_40px_rgba(29,26,34,0.06)] border border-outline-variant/10 rotate-y-12 transition-transform duration-500 hover:rotate-y-0 cursor-pointer">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 bg-secondary-fixed rounded-2xl flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined">auto_graph</span>
+</div>
+<span class="text-[10px] font-label font-black text-secondary uppercase bg-secondary-fixed/30 px-2 py-1 rounded-full">+12.4%</span>
+</div>
+<h4 class="font-headline font-bold text-xl text-primary">Citation Velocity</h4>
+<p class="text-on-surface-variant text-sm mt-1 font-body">Peers referencing your logic blocks per week.</p>
+<div class="mt-6 flex items-baseline gap-2">
+<span class="text-4xl font-extrabold text-primary font-headline tracking-tighter">4.8k</span>
+<span class="text-outline-variant text-sm font-label">units</span>
+</div>
+</div>
+<!-- Research Impact Score -->
+<div class="bg-primary p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary-container rounded-full opacity-50 group-hover:scale-150 transition-transform duration-700"></div>
+<h4 class="font-headline font-bold text-xl text-white relative z-10">Research Impact</h4>
+<p class="text-primary-fixed-dim text-sm mt-1 font-body relative z-10">Global academic resonance score.</p>
+<div class="mt-8 flex justify-between items-end relative z-10">
+<div class="text-5xl font-extrabold text-white font-headline tracking-tighter">89<span class="text-xl text-primary-fixed">/100</span></div>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+<img alt="" class="w-full h-full object-cover" data-alt="portrait of a young female scholar in a modern library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpy__a22sbqNKaAQ5cJ0eRDvJh6CDpIyNetFU6YOUcA7hiWALE1v7it2zQW_nJJB5lN-Y1Y6Hpn1XuQPCJ4Yq_gio84N3kq2jaAI7Zb4V7qQHdvcZ21e9Q_EPx2S9exEpEEr-aWL3xKjK1GUaddTV7F9E4cK_x1badAB6Ge5g2jcJikWYyacTN24dZyqWk1u3F6TVOqm7yE3CFAY_6JjTqfiphCpDyZcTjQA_IHroesqytv2N_aCyiO-o3ItwNgKfK02SK5p6KtjAD"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+<img alt="" class="w-full h-full object-cover" data-alt="portrait of a male researcher with glasses smiling in a professional office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWxIShS13G9H9iqUDLT-ks261tUuLpKmJm2cJIcUsN8T8B1t3RthOFoBd4aBX9T5Tkr4zQ8ADPX3ECcU3-_OP-Hcgcnkj4Kk24rt1tb1ABRy5KZhF8uziH9InCNiqKXP4N64plNOeT-7nvS9TUPa1XbaqfIcYs5wgu3igz5zEzJvkb9GZrNAHZWt0OLEUx1MV6lh6O7RbMM1Rh-cRV6Ae7IR5eLP-_aTCGGsuvXQ3SPaeI_CX6E7BeJJGsZ93DoeSXXPX70Pdhil2W"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-primary-container flex items-center justify-center text-[10px] text-white font-bold">+14</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Subject Mastery Radial (Glassmorphism) -->
+<section class="md:col-span-5 bg-surface-container p-8 rounded-[2rem] relative overflow-hidden h-[500px]">
+<div class="relative z-10">
+<h3 class="font-headline text-2xl font-bold text-primary">Subject Mastery</h3>
+<p class="font-label text-xs text-outline-variant tracking-wider uppercase mt-1">Holistic Competency Matrix</p>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- 3D-like Radial Chart Representation -->
+<div class="relative w-72 h-72">
+<!-- Outer Glass Ring -->
+<div class="absolute inset-0 rounded-full border-[16px] border-emerald-900/5 backdrop-blur-md"></div>
+<!-- Mastery Segments -->
+<div class="absolute inset-0 rounded-full border-[16px] border-primary border-t-transparent border-r-transparent rotate-[45deg] shadow-[0_0_30px_rgba(0,68,53,0.3)]"></div>
+<div class="absolute inset-0 rounded-full border-[16px] border-secondary border-t-transparent border-l-transparent border-b-transparent -rotate-[15deg]"></div>
+<!-- Center Content -->
+<div class="absolute inset-8 rounded-full bg-white/40 border border-white/20 backdrop-blur-xl flex flex-col items-center justify-center shadow-inner">
+<span class="text-4xl font-black text-primary font-headline">A+</span>
+<span class="font-label text-[10px] text-outline font-bold uppercase tracking-widest mt-1">Global Tier</span>
+</div>
+</div>
+</div>
+<!-- Labels Positioning -->
+<div class="absolute bottom-8 left-8 right-8 flex justify-between gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-label text-[10px] font-bold text-primary">PHILOSOPHY</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-label text-[10px] font-bold text-secondary">QUANTUM LOGIC</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="font-label text-[10px] font-bold text-tertiary">ETHICS</span>
+</div>
+</div>
+</section>
+<!-- Scholarly Network Visualization -->
+<section class="md:col-span-7 bg-surface-container-lowest p-8 rounded-[2rem] shadow-sm border border-outline-variant/10 min-h-[500px] flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline text-2xl font-bold text-primary">Scholarly Network</h3>
+<p class="font-label text-xs text-outline-variant tracking-wider uppercase mt-1">Cross-Topic Synaptic Map</p>
+</div>
+<button class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">filter_center_focus</span>
+</button>
+</div>
+<!-- Abstract Network Visualization -->
+<div class="flex-grow relative overflow-hidden bg-slate-50/50 rounded-2xl border border-dashed border-outline-variant/30">
+<!-- Nodes and Connections -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+<!-- Connecting Lines (SVGs) -->
+<svg class="w-full h-full">
+<line opacity="0.3" stroke="#004435" stroke-dasharray="4" stroke-width="1" x1="20%" x2="50%" y1="30%" y2="50%"></line>
+<line opacity="0.3" stroke="#004435" stroke-dasharray="4" stroke-width="1" x1="80%" x2="50%" y1="40%" y2="50%"></line>
+<line opacity="0.2" stroke="#ae3200" stroke-dasharray="4" stroke-width="1" x1="30%" x2="50%" y1="70%" y2="50%"></line>
+<line opacity="0.3" stroke="#004435" stroke-dasharray="4" stroke-width="1" x1="70%" x2="50%" y1="75%" y2="50%"></line>
+</svg>
+<!-- Floating Nodes -->
+<div class="absolute top-[25%] left-[15%] group">
+<div class="w-14 h-14 bg-white shadow-xl rounded-2xl flex items-center justify-center p-2 group-hover:scale-110 transition-transform">
+<img alt="" class="w-full h-full object-cover rounded-lg" data-alt="minimalist aesthetic book cover with abstract shapes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLUc-t3qbaD_wEL9lIvVYL_PAI1RfDCYVH2tXjc50t5oYqxtvsTHVKKsMd66Xn8njwvSUcxZSa8lTQz9uo0_Yg01T6yj4h9uuxOvErAKDopavjUE0gL35hC3niYMiHcLTpRGDmJ1E_1_I5H-DRB_nsnsnCGqow5Kg0FS8U60pZPaOgTfeaAj5hvYZ2LpAEZEB96ywDsv26BkONdBxsRZgPcVFo2IAbC46C5hZLqC6djiZxS6YqZxvzA2e-tZh--ZcAvyooy4mKtsKN"/>
+</div>
+<span class="absolute -bottom-6 left-1/2 -translate-x-1/2 font-label text-[9px] font-black uppercase text-outline whitespace-nowrap">Theology</span>
+</div>
+<div class="absolute top-[45%] left-[45%]">
+<div class="w-20 h-20 bg-primary shadow-2xl rounded-3xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+</div>
+<span class="absolute -bottom-8 left-1/2 -translate-x-1/2 font-label text-[11px] font-black uppercase text-primary whitespace-nowrap">Core Thesis</span>
+</div>
+<div class="absolute top-[35%] right-[15%] group">
+<div class="w-16 h-16 bg-white shadow-xl rounded-2xl flex items-center justify-center p-2 group-hover:scale-110 transition-transform">
+<img alt="" class="w-full h-full object-cover rounded-lg" data-alt="abstract mathematical visualization with glowing blue and white lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEjVaf90eVLsYx1EBEHndDrQSWrDJsSxtgkVYPeu7N59yzTATmlSHJgXC5wXoDBevBNOrFU70EM0MEkTlytolrOEEbNjPeDOK9LpQqKnjTcM-j6So8sfaoAQtbH-LweCRpwyYjWpkzBiFL6O3nUEcMwLWVNJdNCLAtgEBs_Ye0hSUmrDFmYHy5-0lTUVb6dlWQzWgnPf7QcEhTdb3hXhdjM0BDYqNI7rsXN14H4FY0yj8tCN25dHj8QJdc-4-y0YxX7NS9ykw0zBbK"/>
+</div>
+<span class="absolute -bottom-6 left-1/2 -translate-x-1/2 font-label text-[9px] font-black uppercase text-outline whitespace-nowrap">Calculus II</span>
+</div>
+<div class="absolute bottom-[20%] left-[25%] group">
+<div class="w-12 h-12 bg-white shadow-lg rounded-2xl flex items-center justify-center p-2 group-hover:scale-110 transition-transform">
+<img alt="" class="w-full h-full object-cover rounded-lg" data-alt="creative abstract art with splashes of vibrant color" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwku-QmrFKZhRyMzII4uETQ-ajCUVua0kR-3RoNTwErgl-Jiw6yQKaZh1V2XoO02Ben-ksdDz6CVr8RAJi_dYg5HGkh2zGX-f_1zPcjKbBe2PEeZFgvyQe84gkdNy93vishE2M_UxvJtz-xwK2Fg0N9P7OI7xIA6bto2QW3bYRaMxsTqcfqshQ_MBkuvdA6JLFtconGNhjKpD4rSoonEF98AEegRNYE-tWQQXPfSU42vBg9kYpyM4qrpPkzt6-FsI5Stgo91TGGEzc"/>
+</div>
+<span class="absolute -bottom-6 left-1/2 -translate-x-1/2 font-label text-[9px] font-black uppercase text-outline whitespace-nowrap">Art Theory</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Recent Activities / Insights Table -->
+<section class="mt-12 bg-surface-container-low p-8 rounded-[2rem]">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-2xl font-bold text-primary">Knowledge Stream</h3>
+<button class="text-primary font-label text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
+                    View Full Archive <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="pb-4 font-label text-[10px] text-outline font-black uppercase tracking-widest">Research Topic</th>
+<th class="pb-4 font-label text-[10px] text-outline font-black uppercase tracking-widest">Depth achieved</th>
+<th class="pb-4 font-label text-[10px] text-outline font-black uppercase tracking-widest">Impact Status</th>
+<th class="pb-4 font-label text-[10px] text-outline font-black uppercase tracking-widest">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="group hover:bg-surface-container-highest transition-colors">
+<td class="py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined text-xl">biotech</span>
+</div>
+<div>
+<p class="font-headline font-bold text-primary text-sm">Molecular Epistemology</p>
+<p class="text-xs text-outline-variant font-body">Meta-Analysis ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ 12 papers</p>
+</div>
+</div>
+</td>
+<td class="py-5">
+<div class="w-32 h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary"></div>
+</div>
+<span class="text-[10px] font-label font-bold text-primary mt-1 block">75% Mastery</span>
+</td>
+<td class="py-5">
+<span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full uppercase">High Resonance</span>
+</td>
+<td class="py-5">
+<button class="material-symbols-outlined text-outline-variant hover:text-primary transition-colors">more_horiz</button>
+</td>
+</tr>
+<tr class="group hover:bg-surface-container-highest transition-colors">
+<td class="py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-xl">psychology</span>
+</div>
+<div>
+<p class="font-headline font-bold text-primary text-sm">Neurolinguistic Coding</p>
+<p class="text-xs text-outline-variant font-body">Exploratory ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ 4 papers</p>
+</div>
+</div>
+</td>
+<td class="py-5">
+<div class="w-32 h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-secondary"></div>
+</div>
+<span class="text-[10px] font-label font-bold text-secondary mt-1 block">28% Mastery</span>
+</td>
+<td class="py-5">
+<span class="px-3 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded-full uppercase">Developing</span>
+</td>
+<td class="py-5">
+<button class="material-symbols-outlined text-outline-variant hover:text-primary transition-colors">more_horiz</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl z-50 rounded-t-3xl shadow-[0_-10px_30px_rgba(0,0,0,0.04)]">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-emerald-700 transition-transform duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-['Manrope'] text-[10px] font-bold uppercase tracking-widest mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-emerald-700 transition-transform duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-['Manrope'] text-[10px] font-bold uppercase tracking-widest mt-1">Research</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-emerald-700 transition-transform duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="font-['Manrope'] text-[10px] font-bold uppercase tracking-widest mt-1">Achievements</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-emerald-100/80 dark:bg-emerald-900/50 text-emerald-900 dark:text-emerald-100 rounded-2xl px-5 py-2 transition-transform duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-['Manrope'] text-[10px] font-bold uppercase tracking-widest mt-1">Analytics</span>
+</a>
+</nav>
+  <script src="assets/site.js" defer></script>
+</body></html>
