@@ -322,6 +322,11 @@
     return panel;
   }
 
+  function findPrimarySearchInput() {
+    return Array.from(document.querySelectorAll('input[type="text"]'))
+      .find((input) => /search|keywords|authors|doi/i.test(input.placeholder || ""));
+  }
+
   function activeMatch(href, pathname) {
     if (pathname === "index.html" && href === "index.html") return true;
     if (href === pathname) return true;
@@ -390,9 +395,9 @@
         </div>
         <nav class="sc-shell-toplinks">${topLinksHtml}</nav>
         <div class="sc-shell-actions">
-          <a class="sc-shell-iconbtn" href="research.html" aria-label="Search">
+          <button class="sc-shell-iconbtn" type="button" aria-label="Search This Page" data-sc-page-search>
             <span class="material-symbols-outlined">search</span>
-          </a>
+          </button>
           <a class="sc-shell-iconbtn" href="profile.html" aria-label="Profile">
             <span class="material-symbols-outlined">account_circle</span>
           </a>
@@ -936,6 +941,41 @@
     applyPeriod();
   }
 
+  function setupShellSearchTrigger() {
+    const trigger = document.querySelector("[data-sc-page-search]");
+    if (!trigger) return;
+
+    trigger.addEventListener("click", () => {
+      const input = findPrimarySearchInput();
+      if (input) {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+        window.setTimeout(() => {
+          input.focus();
+          input.select?.();
+          input.dispatchEvent(new Event("focus", { bubbles: true }));
+        }, 180);
+        return;
+      }
+
+      const query = window.prompt("Search this page");
+      if (!query) return;
+      const normalized = normalize(query);
+      const sections = Array.from(document.querySelectorAll("main section, main article, main > div"));
+      let firstMatch = null;
+
+      sections.forEach((section) => {
+        const match = normalize(section.textContent || "").includes(normalized);
+        section.classList.toggle("ring-2", match);
+        section.classList.toggle("ring-primary/30", match);
+        if (match && !firstMatch) firstMatch = section;
+      });
+
+      if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  }
+
   function repairBrokenText() {
     document.querySelectorAll("*").forEach((node) => {
       if (node.children.length) return;
@@ -962,6 +1002,7 @@
   hideLegacyShell();
   cleanupLayout();
   buildFooter();
+  setupShellSearchTrigger();
   hydrateIcons();
   repairBrokenText();
   setupGlobalSearch();
